@@ -32,8 +32,12 @@ jobs:
         run: |
           cd android && ./gradlew assembleRelease
       # step 5
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y%m%d_%H%M%S')"
+      # step 6
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
-          name: app-release.apk
+          name: app-release-${{ steps.date.outputs.date }}
           path: android/app/build/outputs/apk/release/
