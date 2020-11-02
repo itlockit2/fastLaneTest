@@ -1,0 +1,6 @@
+module Pods_actionBuild_actionBuildTests {
+  umbrella header "Pods-actionBuild-actionBuildTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
