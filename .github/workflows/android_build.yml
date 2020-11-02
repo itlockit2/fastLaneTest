@@ -1,9 +1,6 @@
 name: react-native-android-build-apk
 
-on:
-  push:
-    branches:
-      - master
+on: pull_request
 
 jobs:
   install-and-test:
@@ -29,7 +26,7 @@ jobs:
     needs: install-and-test
     runs-on: ubuntu-latest
     steps:
-      # step 1
+      # step 1 
       - name: Checkout source code
         uses: actions/checkout@v2
       # step 2
