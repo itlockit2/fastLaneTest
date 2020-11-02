@@ -161,13 +161,6 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-            android.applicationVariants.all { variant ->
-                variant.outputs.all {
-                    def date = new Date();
-                    def formattedDate = date.format('yyyyMMddHHmmss')
-                    outputFileName = "${applicationId}_${versionCode}_${variant.flavorName}_${variant.buildType.name}_${formattedDate}.apk"
-                }
-            }
         }
     }
 
