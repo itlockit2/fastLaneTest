@@ -7,9 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Install npm dependencies
+      - name: Install yarn dependencies
         run: |
-          npm install
+          yarn install
 
   build-android:
     needs: install-and-test
@@ -19,9 +19,9 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
       # step 2
-      - name: Install npm dependencies
+      - name: Install yarn dependencies
         run: |
-          npm install
+          yarn install
       # step 3
       - name: Set up JDK
         uses: actions/setup-java@v1

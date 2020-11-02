@@ -169,13 +169,18 @@ android {
         variant.outputs.each { output ->
             // For each separate APK per architecture, set a unique version code as described here:
             // https://developer.android.com/studio/build/configure-apk-splits.html
-            def versionCodes = ["armeabi-v7a": 1, "x86": 2, "arm64-v8a": 3, "x86_64": 4]
-            def abi = output.getFilter(OutputFile.ABI)
-            if (abi != null) {  // null for the universal-debug, universal-release variants
-                output.versionCodeOverride =
-                        versionCodes.get(abi) * 1048576 + defaultConfig.versionCode
-            }
+            def SEPARATOR = "_"
+            def project = "AppName"
+            def buildType = variant.variantData.variantConfiguration.buildType.name
+            def versionName = "v" + variant.versionName
+            def versionCode = "c" + variant.versionCode
+            def date = new Date();
+            def formattedDate = date.format('ddMMyyyy_HHmm')
 
+            def newApkName = project + SEPARATOR + buildType + SEPARATOR + versionCode +
+                    SEPARATOR + versionName +
+                    SEPARATOR + formattedDate + ".apk"
+            output.outputFile = new File(output.outputFile.parent, newApkName)
         }
     }
 }
