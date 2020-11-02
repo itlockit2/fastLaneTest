@@ -1,6 +1,6 @@
 name: react-native-android-build-apk
 
-on: pull_request
+on: main
 
 jobs:
   install-and-test:
