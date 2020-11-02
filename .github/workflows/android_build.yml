@@ -1,6 +1,8 @@
 name: react-native-android-build-apk
 
-on: main
+on:
+  push:
+    branches: [main]
 
 jobs:
   install-and-test:
