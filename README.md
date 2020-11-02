@@ -1,1 +1,2 @@
 # fastLaneTest
+build test
