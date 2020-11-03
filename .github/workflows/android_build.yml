@@ -54,11 +54,13 @@ jobs:
         env:
           ANDROID_SIGNING_ENCODE_KEY: ${{secrets.ANDROID_SIGNING_ENCODE_KEY}}
         run: |
-          base64 -d $ANDROID_SIGNING_ENCODE_KEY >> signedKey
+          echo $ANDROID_SIGNING_ENCODE_KEY >> encodeKey
+          base64 -d ./encodeKey >> signedKey
+          echo signedKey
       # step 4
       - name: Build Android Release
         env:
-          ANDROID_SIGNING_ALIAS: ${{secrets.ANDROID_SIGNING_ENCODE_KEY}}
+          ANDROID_SIGNING_ALIAS: ${{secrets.ANDROID_SIGNING_ALIAS}}
           ANDROID_SIGNING_KEYSTORE_PASSWORD: ${{secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD}}
           ANDROID_SIGNING_KEY_PASSWORD: ${{secrets.ANDROID_SIGNING_KEY_PASSWORD}}
         run: |
