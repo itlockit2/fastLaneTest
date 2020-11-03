@@ -1,0 +1,4 @@
+#Mon Nov 02 20:32:27 KST 2020
+base.0=/Users/songhoyun/Documents/fastlane/actionBuild/android/app/build/intermediates/dex/release/mergeDexRelease/out/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex
