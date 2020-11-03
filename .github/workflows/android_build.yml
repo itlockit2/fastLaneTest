@@ -55,11 +55,18 @@ jobs:
           ANDROID_SIGNING_ENCODE_KEY: ${{secrets.ANDROID_SIGNING_ENCODE_KEY}}
         run: |
           base64 -d $ANDROID_SIGNING_ENCODE_KEY >> signedKey
-          echo signedKey
       # step 4
       - name: Build Android Release
+        env:
+          ANDROID_SIGNING_ALIAS: ${{secrets.ANDROID_SIGNING_ENCODE_KEY}}
+          ANDROID_SIGNING_KEYSTORE_PASSWORD: ${{secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD}}
+          ANDROID_SIGNING_KEY_PASSWORD: ${{secrets.ANDROID_SIGNING_KEY_PASSWORD}}
         run: |
-          cd android && ./gradlew assembleRelease
+          cd android
+          ./gradlew assembleRelease -Pandroid.injected.signing.store.file=../signedKey \
+          -Pandroid.injected.signing.store.password=$ANDROID_SIGNING_KEYSTORE_PASSWORD \
+          -Pandroid.injected.signing.store.key.alias=$ANDROID_SIGNING_ALIAS \
+          -Pandroid.injected.signing.store.key.password=$ANDROID_SIGNING_KEY_PASSWORD
       # step 5
       - name: Get current date
         id: date
