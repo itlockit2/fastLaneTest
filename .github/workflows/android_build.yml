@@ -54,6 +54,7 @@ jobs:
         env:
           ANDROID_SIGNING_ENCODE_KEY: ${{secrets.ANDROID_SIGNING_ENCODE_KEY}}
         run: |
+          echo $ANDROID_SIGNING_ENCODE_KEY >> encodeKey
           base64 -d $ANDROID_SIGNING_ENCODE_KEY >> signedKey
           echo signedKey
       # step 4
