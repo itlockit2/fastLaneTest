@@ -15,15 +15,15 @@ jobs:
           git log --since=1.day >> gitLogResult.txt
           filesize=$(stat -c %s "gitLogResult.txt")
           if [ ${filesize} -eq 0 ] ; then
-              echo "isChangeCode=false" >> $GITHUB_ENV
+              echo 'echo ::set-env name=IS_CHANGECODE::0'
           else 
-              echo "isChangeCode=true" >> $GITHUB_ENV
+              echo 'echo ::set-env name=IS_CHANGECODE::1'
           fi
           head gitLogResult.txt
   build-android:
     runs-on: ubuntu-latest
     needs: check-change
-    if: ${{env.isChangeCode == 'true'}}
+    if: env.IS_CHANGECODE == '1'
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
