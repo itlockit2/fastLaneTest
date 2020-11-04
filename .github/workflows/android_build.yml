@@ -15,9 +15,9 @@ jobs:
           git log --since=1.day >> gitLogResult.txt
           filesize=$(stat -c %s "gitLogResult.txt")
           if [ ${filesize} -eq 0 ] ; then
-              echo 'echo ::set-env name=IS_CHANGECODE::0'
+              echo ::set-output name=IS_CHANGECODE::0
           else 
-              echo 'echo ::set-env name=IS_CHANGECODE::1'
+              echo ::set-output name=IS_CHANGECODE::1
           fi
           head gitLogResult.txt
   build-android:
@@ -25,7 +25,7 @@ jobs:
     needs: check-change
     steps:
       - name: Checkout source code
-        if: env.IS_CHANGECODE == '1'
+        if: jobs.check-change.steps.checkChange.outputs.IS_CHANGECODE == '1'
         uses: actions/checkout@v2
         with:
           lfs: true
