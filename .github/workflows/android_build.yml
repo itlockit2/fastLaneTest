@@ -4,6 +4,8 @@ on: pull_request
 jobs:
   check-change:
     runs-on: ubuntu-latest
+    outputs:
+      isChangeCode: ${{ steps.checkChange.outputs.isChangeCode }}
     steps:
       - name: Checkout source code
         uses: actions/checkout@v2
@@ -15,9 +17,9 @@ jobs:
           git log --since=1.day >> gitLogResult.txt
           filesize=$(stat -c %s "gitLogResult.txt")
           if [ ${filesize} -eq 0 ] ; then
-              echo ::set-output name=IS_CHANGECODE::0
+              echo ::set-output name=isChangeCode::0
           else 
-              echo ::set-output name=IS_CHANGECODE::1
+              echo ::set-output name=isChangeCode::1
           fi
           head gitLogResult.txt
   build-android:
@@ -25,7 +27,7 @@ jobs:
     needs: check-change
     steps:
       - name: Checkout source code
-        if: jobs.check-change.steps.checkChange.outputs.IS_CHANGECODE == '1'
+        if: needs.check-change.outputs.isChangeCode == '1'
         uses: actions/checkout@v2
         with:
           lfs: true
