@@ -1,6 +1,7 @@
 name: react-native-android-build-apk
 
 on: pull_request
+
 jobs:
   check-change:
     runs-on: ubuntu-latest
@@ -32,30 +33,38 @@ jobs:
         with:
           lfs: true
       - name: Use Node.js
+        if: needs.check-change.outputs.isChangeCode == '1'
         uses: actions/setup-node@v1
         with:
           node-version: '12.13.1'
       - name: remove node_modules
+        if: needs.check-change.outputs.isChangeCode == '1'
         run: rm -rf node_modules
       - name: Clean yarn cache
+        if: needs.check-change.outputs.isChangeCode == '1'
         run: yarn cache clean
       - name: Install yarn dependencies
+        if: needs.check-change.outputs.isChangeCode == '1'
         run: yarn install
       - name: Set up JDK
+        if: needs.check-change.outputs.isChangeCode == '1'
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
       - name: Clean gradlew
+        if: needs.check-change.outputs.isChangeCode == '1'
         run: |
           cd android
           ./gradlew clean
       - name: Build android release
+        if: needs.check-change.outputs.isChangeCode == '1'
         run: |
           echo `pwd`
           cd android
           echo `pwd`
           ./gradlew assembleRelease
       - name: Sign android release
+        if: needs.check-change.outputs.isChangeCode == '1'
         uses: r0adkll/sign-android-release@v1
         with:
           releaseDirectory: android/app/build/outputs/apk/release
@@ -64,9 +73,11 @@ jobs:
           keyStorePassword: ${{ secrets.ANDROID_SIGNING_KEYSTORE_PASSWORD }}
           keyPassword: ${{ secrets.ANDROID_SIGNING_KEY_PASSWORD }}
       - name: Get current date
+        if: needs.check-change.outputs.isChangeCode == '1'
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d_%H%M%S')"
       - name: Remove unsigned & aligned apk file
+        if: needs.check-change.outputs.isChangeCode == '1'
         run: |
           cd ./android/app/build/outputs/apk/release/
           rm -rf app-release-unsigned.apk
@@ -74,6 +85,7 @@ jobs:
           rm -rf signingKey.jks
           mv app-release-unsigned-signed.apk app-release-${{ steps.date.outputs.date }}.apk
       - name: Upload Artifact
+        if: needs.check-change.outputs.isChangeCode == '1'
         uses: actions/upload-artifact@v2
         with:
           name: app-release-${{ steps.date.outputs.date }}
